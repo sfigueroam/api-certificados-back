@@ -1,0 +1,28 @@
+{
+  "name": "api-certificados-back",
+  "version": "1.0.0",
+  "description": "api para crear y obtener certificados",
+  "main": "createCertificate.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/api-certificados-back"
+  },
+  "author": "vmunoz ytarkowski",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-jest": "^24.8.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.550.0",
+    "jsontoxml": "^1.0.1",
+    "libxmljs": "^0.19.5",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "shortid": "^2.2.15"
+  }
+}

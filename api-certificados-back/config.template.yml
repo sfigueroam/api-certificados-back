@@ -1,0 +1,15 @@
+region: us-east-1
+stage: BUILD_ENV
+env: BUILD_ENV
+role: BUILD_LAMBDA_ROLE_ARN
+bucket: BUILD_BUCKET
+accessControlAllowOrigin: "*"
+apiId: BUILD_API_ID
+apiRootId: BUILD_API_ROOT_ID
+wsHostNube: BUILD_HOST_NUBE
+wsGrantType: BUILD_WS_GRANT_TYPE
+wsClientSecret: BUILD_WS_CLIENT_SECRET
+wsClientId: BUILD_WS_CLIENT_ID
+wsScope: BUILD_WS_SCOPE
+wsTokenHost: BUILD_WS_HOST
+cognito: BUILD_COGNITO_POOL_ARN       

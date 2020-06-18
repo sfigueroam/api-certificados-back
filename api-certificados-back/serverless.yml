@@ -1,0 +1,85 @@
+service: api-certificados  
+  
+custom: ${file(./config.yml)}  
+  
+provider:  
+  name: aws  
+  runtime: nodejs10.x
+  region: ${self:custom.region}  
+  stage: ${self:custom.stage}  
+  role: ${self:custom.role}  
+  apiGateway:  
+    restApiId: ${self:custom.apiId}  
+    restApiRootResourceId: ${self:custom.apiRootId}  
+  stackName: tgr-${self:custom.stage}-${self:service}  
+  stackTags:  
+    Application: ${self:service}  
+    Env: ${self:custom.stage}  
+  environment: 
+    BUCKET_NAME                 : ${self:custom.bucket}
+    prefix                      : tgr-${self:custom.env}-${self:service}
+    HOST_NUBE                   : ${self:custom.wsHostNube}
+    REST_TOKEN_CLIENT_ID        : ${self:custom.wsClientId}
+    REST_TOKEN_SCOPE            : ${self:custom.wsScope}
+    REST_TOKEN_CLIENT_SECRET    : ${self:custom.wsClientSecret}
+    REST_TOKEN_GRANT_TYPE       : ${self:custom.wsGrantType}
+    REST_HOST_TIERRA            : ${self:custom.wsTokenHost}
+    ENV                         : ${self:custom.env}
+
+package:  
+  exclude:  
+    - package-lock.json  
+    - package.json  
+
+  
+functions:  
+  createCertificate:  
+    name: tgr-${self:custom.stage}-${self:service}-createCertificate  
+    handler: createCertificate.handler
+    timeout: 30
+    events:  
+      - http:  
+          path: /certificados  
+          method: post  
+          cors: true
+          authorizer:
+            arn: ${self:custom.cognito}
+            scopes:
+            - tgr-${self:custom.env}-api-certificados/all
+    environment:  
+      bucket: ${self:custom.bucket}  
+      accessControlAllowOrigin: ${self:custom.accessControlAllowOrigin}
+  
+  getCertificate:  
+    name: tgr-${self:custom.stage}-${self:service}-getCertificate  
+    handler: getCertificate.handler
+    timeout: 30
+    events:  
+      - http:  
+          path: /certificados/{idCert}  
+          method: get  
+          cors: true  
+          authorizer:
+            arn: ${self:custom.cognito}
+            scopes:
+            - tgr-${self:custom.env}-api-certificados/all
+    environment:  
+      bucket: ${self:custom.bucket}  
+      accessControlAllowOrigin: ${self:custom.accessControlAllowOrigin}
+      
+  getListCertificate:  
+    name: tgr-${self:custom.stage}-${self:service}-getListCertificate  
+    handler: getListCertificate.handler
+    timeout: 30
+    events:  
+      - http:  
+          path: /listacertificados/ 
+          method: get  
+          cors: true
+          authorizer:
+            arn: ${self:custom.cognito}
+            scopes:
+            - tgr-${self:custom.env}-api-certificados/all
+    environment:  
+      bucket: ${self:custom.bucket}  
+      accessControlAllowOrigin: ${self:custom.accessControlAllowOrigin}  

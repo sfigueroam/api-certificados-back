@@ -1,0 +1,37 @@
+version: 0.2 
+phases: 
+    install: 
+        commands: 
+        - cp ${CODEBUILD_SRC_DIR}/config.template.yml ${CODEBUILD_SRC_DIR}/config.yml 
+ 
+        - sed -i "s;BUILD_ENV;${BUILD_ENV};g"                                           ${CODEBUILD_SRC_DIR}/config.yml 
+        - sed -i "s;BUILD_STAGE;${BUILD_STAGE};g"                                       ${CODEBUILD_SRC_DIR}/config.yml 
+        - sed -i "s;BUILD_LAMBDA_ROLE_ARN;${BUILD_LAMBDA_ROLE_ARN};g"                   ${CODEBUILD_SRC_DIR}/config.yml 
+        - sed -i "s;BUILD_API_ID;${BUILD_API_ID};g"                                     ${CODEBUILD_SRC_DIR}/config.yml 
+        - sed -i "s;BUILD_API_ROOT_ID;${BUILD_API_ROOT_ID};g"                           ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_HOST_NUBE;${BUILD_HOST_NUBE};g"                               ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_BUCKET;${BUILD_BUCKET};g"                                     ${CODEBUILD_SRC_DIR}/config.yml 
+        - sed -i "s;BUILD_COGNITO_POOL_ARN;${BUILD_COGNITO_POOL_ARN};g"                 ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_WS_GRANT_TYPE;${BUILD_WS_GRANT_TYPE};g"                       ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_WS_CLIENT_SECRET;${BUILD_WS_CLIENT_SECRET};g"                 ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_WS_CLIENT_ID;${BUILD_WS_CLIENT_ID};g"                         ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_WS_SCOPE;${BUILD_WS_SCOPE};g"                                 ${CODEBUILD_SRC_DIR}/config.yml
+        - sed -i "s;BUILD_WS_HOST;${BUILD_WS_HOST};g"                                   ${CODEBUILD_SRC_DIR}/config.yml
+        
+        - cat ${CODEBUILD_SRC_DIR}/config.yml 
+        - echo Installing serverless... 
+        - npm install -g serverless@1.44.0 
+        - echo Installing source NPM dependencies... 
+        - npm install 
+ 
+    build: 
+        commands: 
+        - serverless deploy 
+ 
+    post_build: 
+        commands: 
+ 
+artifacts: 
+    files: 
+        – serverless.yml 
+    discard-paths: yes 
